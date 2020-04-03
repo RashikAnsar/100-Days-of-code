@@ -738,3 +738,308 @@ fun main() {
     nullableName!!.toLowerCase()
 }
 ```
+
+# Object Oriented Programming
+
+> Kotlin supports both object oriented programming (OOP) as well as functional programming. Object oriented programming is based on real time objects and classes. Kotlin also support pillars of OOP language such as **encapsulation**, **inheritance** and **polymorphism**.
+
+## Class 
+A class is a blueprint for the objects which have common properties. Kotlin classes are declared using keyword `class`. Kotlin class has a class header which specifies its type parameters, constructor etc. and the class body which is surrounded by curly braces.
+
+Class body contains the data members(properties) and member functions(methods or behaviour).
+
+- The followin two lines are same.
+```kotlin
+class Person constructor(firstName: String, lastName: String) {}
+```
+```kotlin
+class Person(firstName: String, lastName: String) {}
+```
+
+
+## Object
+Object is real time entity or may be a logical entity which has state and behavior. It has the characteristics:
+- state: it represents value of an object.
+- behavior: it represent the functionality of an object.
+
+Object is used to access the properties and member function of a class. Kotlin allows to create multiple object of a class.
+
+Properties and member function of class are accessed by . operator using object.
+```kotlin
+fun main() {
+    var rashik = Person("Rashik Ansar", "Shaik")
+    println(rashik.hobby)
+}
+```
+
+
+```kotlin
+fun main() {
+    var unknown = Person()
+
+    var rashik = Person("Rashik Ansar", "Shaik")
+    rashik.stateHobby()
+    rashik.hobby = "Play video games"
+    rashik.stateHobby()
+    
+    var kevin = Person("Kevin", "Hart", 40)
+    kevin.hobby = "Cracking jokes"
+    kevin.stateHobby()
+}
+
+
+class Person(firstName: String = "John", lastName: String = "Doe") {
+    // Data members
+    var firstName: String ?= null
+    var lastName: String ?= null    
+    var age: Int ?= null
+    var hobby: String = "watch Netflix"
+    
+    // Initializer block
+    init {
+        this.firstName = firstName
+        this.lastName = lastName
+        println("First Name: $firstName, Last Name: $lastName")
+    }
+    
+    // Member secondary constructor
+    constructor(firstName: String, lastName: String, age: Int): this(firstName, lastName) {
+        this.age = age
+        println("First Name: $firstName, Last Name: $lastName, age: $age")
+    }
+    
+    
+    // Member functions
+    fun stateHobby() {
+        println("$firstName\'s hobby is $hobby")
+    }
+}
+```
+
+:::caution
+[Why kotlin allows to declare variable with the same name as parameter inside the method?](https://stackoverflow.com/a/49688168)
+:::
+
+```kotlin
+fun main() {
+    var myCar = Car()
+    println("Brand is: ${myCar.myBrand}")
+    myCar.maxSpeed = 242
+    println("Max Speed is ${myCar.maxSpeed}")
+    println("Model is ${myCar.myModel}")
+}
+
+class Car() {
+    lateinit var owner: String
+        
+    val myBrand: String = "bmw"
+    get() {
+        return field.toUpperCase()
+    }
+    
+    var maxSpeed: Int = 250
+    get() = field
+    set(value) {
+        field = if(value >= 0 && value <= 250) value else throw IllegalArgumentException("Invalid speed")
+    }
+    
+    var myModel: String = "M5"
+    private set
+    
+    init {
+        this.owner = "Frank" 
+    }
+
+}
+```
+
+```kotlin
+// data class
+data class User(val id: Long, var name: String) 
+
+fun main() {
+    val user1 = User(1, "Rashik Ansar")
+    
+    println(user1.name)
+    println(user1.id)
+    
+    println(user1.component1())
+    println(user1.component2())
+    
+    
+    val (id, name) = user1
+    println("id: $id \t name: $name")
+    
+    user1.name = "Alpha"
+    println(user1.name)
+    
+    val user2 = user1.copy(name="Alpha")
+    println(user1.equals(user2))
+    println(user2.name)
+}
+```
+
+## Inheritance
+
+The class that inherits the features of another class is called the **Sub class** or the **Child class** or the **Derived class**. The class whose features are inherited is known as **Super class** or **Parent class** or **Base class**
+
+:::note
+All classes in Kotlin have a common superclass Any, that is the default superclass for a class with no supertypes declared
+
+`Any` has three methods: `equals()`, `hashCode()` and `toString()`. Thus, they are defined for all Kotlin classes.
+
+:::
+
+By default, Kotlin classes are `final`: they **can’t be inherited**. To make a class inheritable, mark it with the `open` keyword.
+
+```kotlin
+fun main() {
+   var audiA3 = Car("A3", "Audi")
+   var teslaS = ElectricCar("S-Model", "Tesla", 85.0)
+   
+   audiA3.drive(200.0)
+   teslaS.drive(200.0)
+   teslaS.drive()
+}
+
+// Super class of electric car
+open class Car(val name: String, val brand: String) {
+    open var range: Double = 0.0
+    
+    fun extendedRange(amount: Double) {
+        if (amount > 0) {
+            range += amount
+        }
+    }
+    
+    open fun drive(distance: Double) {
+        println("Drove for $distance KMs")
+    }
+}
+
+// sub class of Car
+class ElectricCar(name:String, brand: String, batteryLife: Double): Car(name, brand) {
+    override var range = batteryLife * 6
+    
+    override fun drive(distance: Double) {
+        println("Drove for $distance KMs on battery")
+    }
+    
+    fun drive() {
+        println("Drove for $range KMs on electricity")
+    }
+}
+```
+
+## Abstract class
+A class and some of its members may be declared abstract. An abstract member does not have an implementation in its class. Note that we do not need to annotate an abstract class or function with open – it goes without saying.
+
+We can override a non-abstract open member with an abstract one
+
+:::note
+Abstract classes are always `open`. You do not need to explicitly use `open` keyword to inherit subclasses from them.
+:::
+
+```kotlin
+abstract class Person(name: String) {
+    init {
+        println("My name is $name.")
+    }
+
+    fun displaySSN(ssn: Int) {
+        println("My SSN is $ssn.")
+    }
+
+    abstract fun displayJob(description: String)
+}
+
+class Teacher(name: String): Person(name) {
+
+    override fun displayJob(description: String) {
+        println(description)
+    }
+}
+
+fun main(args: Array<String>) {
+    val jack = Teacher("Jack Smith")
+    jack.displayJob("I'm a mathematics teacher.")
+    jack.displaySSN(23123)
+}
+```
+
+Kotlin interfaces are similar to abstract classes. However, interfaces cannot store state whereas abstract classes can. Interfaces cannot have constructors.
+
+## Interface
+
+Interfaces in Kotlin can contain declarations of abstract methods, as well as method implementations. 
+- Using interface supports functionality of multiple inheritance.
+- It can be used achieve to loose coupling.
+- It is used to achieve abstraction.
+
+```kotlin
+interface Drivable {
+    val maxSpeed: Double
+    fun drive(): String
+    fun brake() {
+        println("Vehicle is slowing down")
+    }
+}
+
+// Super class of electric car
+open class Car(override val maxSpeed: Double, val name: String, val brand: String): Drivable {
+    open var range: Double = 0.0
+    
+    fun extendedRange(amount: Double) {
+        if (amount > 0) {
+            range += amount
+        }
+    }
+    
+    open fun drive(distance: Double) {
+        println("Drove for $distance KMs")
+    }
+    
+    override fun drive(): String {
+        return "Driving......"
+    }
+}
+
+// sub class of Car
+class ElectricCar(
+    maxSpeed: Double,
+    name:String,
+    brand: String,
+    batteryLife: Double
+): Car(maxSpeed, name, brand) {
+    override var range = batteryLife * 6
+    
+    override fun drive(distance: Double) {
+        println("Drove for $distance KMs on battery")
+    }
+    
+    override fun drive(): String {
+        return "Drove for $range KMs on electricity"
+    }
+    
+    override fun brake() {
+        super<>.brake()
+        println("Brake from electric car")
+    }
+}
+
+fun main() {
+   var audiA3 = Car(220.0, "A3", "Audi")
+   var teslaS = ElectricCar(240.0, "S-Model", "Tesla", 85.0)
+   
+   audiA3.drive(200.0)
+   teslaS.drive(200.0)
+   teslaS.drive()
+   
+   teslaS.brake()
+   audiA3.brake()
+}
+```
+:::important
+To override the non-abstract method `brake()` we need to specify interface name with method using `super` keyword as `super<interface_name>.methodName()` for immediate parent. For sub class then we only use the `super.methodName()`.
+:::
+
