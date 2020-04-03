@@ -743,35 +743,39 @@ fun main() {
 
 > Kotlin supports both object oriented programming (OOP) as well as functional programming. Object oriented programming is based on real time objects and classes. Kotlin also support pillars of OOP language such as **encapsulation**, **inheritance** and **polymorphism**.
 
-## Class 
+## Class
+
 A class is a blueprint for the objects which have common properties. Kotlin classes are declared using keyword `class`. Kotlin class has a class header which specifies its type parameters, constructor etc. and the class body which is surrounded by curly braces.
 
 Class body contains the data members(properties) and member functions(methods or behaviour).
 
 - The followin two lines are same.
+
 ```kotlin
 class Person constructor(firstName: String, lastName: String) {}
 ```
+
 ```kotlin
 class Person(firstName: String, lastName: String) {}
 ```
 
-
 ## Object
+
 Object is real time entity or may be a logical entity which has state and behavior. It has the characteristics:
+
 - state: it represents value of an object.
 - behavior: it represent the functionality of an object.
 
 Object is used to access the properties and member function of a class. Kotlin allows to create multiple object of a class.
 
 Properties and member function of class are accessed by . operator using object.
+
 ```kotlin
 fun main() {
     var rashik = Person("Rashik Ansar", "Shaik")
     println(rashik.hobby)
 }
 ```
-
 
 ```kotlin
 fun main() {
@@ -781,7 +785,7 @@ fun main() {
     rashik.stateHobby()
     rashik.hobby = "Play video games"
     rashik.stateHobby()
-    
+
     var kevin = Person("Kevin", "Hart", 40)
     kevin.hobby = "Cracking jokes"
     kevin.stateHobby()
@@ -791,24 +795,24 @@ fun main() {
 class Person(firstName: String = "John", lastName: String = "Doe") {
     // Data members
     var firstName: String ?= null
-    var lastName: String ?= null    
+    var lastName: String ?= null
     var age: Int ?= null
     var hobby: String = "watch Netflix"
-    
+
     // Initializer block
     init {
         this.firstName = firstName
         this.lastName = lastName
         println("First Name: $firstName, Last Name: $lastName")
     }
-    
+
     // Member secondary constructor
     constructor(firstName: String, lastName: String, age: Int): this(firstName, lastName) {
         this.age = age
         println("First Name: $firstName, Last Name: $lastName, age: $age")
     }
-    
-    
+
+
     // Member functions
     fun stateHobby() {
         println("$firstName\'s hobby is $hobby")
@@ -831,23 +835,23 @@ fun main() {
 
 class Car() {
     lateinit var owner: String
-        
+
     val myBrand: String = "bmw"
     get() {
         return field.toUpperCase()
     }
-    
+
     var maxSpeed: Int = 250
     get() = field
     set(value) {
         field = if(value >= 0 && value <= 250) value else throw IllegalArgumentException("Invalid speed")
     }
-    
+
     var myModel: String = "M5"
     private set
-    
+
     init {
-        this.owner = "Frank" 
+        this.owner = "Frank"
     }
 
 }
@@ -855,24 +859,24 @@ class Car() {
 
 ```kotlin
 // data class
-data class User(val id: Long, var name: String) 
+data class User(val id: Long, var name: String)
 
 fun main() {
     val user1 = User(1, "Rashik Ansar")
-    
+
     println(user1.name)
     println(user1.id)
-    
+
     println(user1.component1())
     println(user1.component2())
-    
-    
+
+
     val (id, name) = user1
     println("id: $id \t name: $name")
-    
+
     user1.name = "Alpha"
     println(user1.name)
-    
+
     val user2 = user1.copy(name="Alpha")
     println(user1.equals(user2))
     println(user2.name)
@@ -896,7 +900,7 @@ By default, Kotlin classes are `final`: they **can’t be inherited**. To make a
 fun main() {
    var audiA3 = Car("A3", "Audi")
    var teslaS = ElectricCar("S-Model", "Tesla", 85.0)
-   
+
    audiA3.drive(200.0)
    teslaS.drive(200.0)
    teslaS.drive()
@@ -905,13 +909,13 @@ fun main() {
 // Super class of electric car
 open class Car(val name: String, val brand: String) {
     open var range: Double = 0.0
-    
+
     fun extendedRange(amount: Double) {
         if (amount > 0) {
             range += amount
         }
     }
-    
+
     open fun drive(distance: Double) {
         println("Drove for $distance KMs")
     }
@@ -920,11 +924,11 @@ open class Car(val name: String, val brand: String) {
 // sub class of Car
 class ElectricCar(name:String, brand: String, batteryLife: Double): Car(name, brand) {
     override var range = batteryLife * 6
-    
+
     override fun drive(distance: Double) {
         println("Drove for $distance KMs on battery")
     }
-    
+
     fun drive() {
         println("Drove for $range KMs on electricity")
     }
@@ -932,6 +936,7 @@ class ElectricCar(name:String, brand: String, batteryLife: Double): Car(name, br
 ```
 
 ## Abstract class
+
 A class and some of its members may be declared abstract. An abstract member does not have an implementation in its class. Note that we do not need to annotate an abstract class or function with open – it goes without saying.
 
 We can override a non-abstract open member with an abstract one
@@ -971,7 +976,8 @@ Kotlin interfaces are similar to abstract classes. However, interfaces cannot st
 
 ## Interface
 
-Interfaces in Kotlin can contain declarations of abstract methods, as well as method implementations. 
+Interfaces in Kotlin can contain declarations of abstract methods, as well as method implementations.
+
 - Using interface supports functionality of multiple inheritance.
 - It can be used achieve to loose coupling.
 - It is used to achieve abstraction.
@@ -988,17 +994,17 @@ interface Drivable {
 // Super class of electric car
 open class Car(override val maxSpeed: Double, val name: String, val brand: String): Drivable {
     open var range: Double = 0.0
-    
+
     fun extendedRange(amount: Double) {
         if (amount > 0) {
             range += amount
         }
     }
-    
+
     open fun drive(distance: Double) {
         println("Drove for $distance KMs")
     }
-    
+
     override fun drive(): String {
         return "Driving......"
     }
@@ -1012,15 +1018,15 @@ class ElectricCar(
     batteryLife: Double
 ): Car(maxSpeed, name, brand) {
     override var range = batteryLife * 6
-    
+
     override fun drive(distance: Double) {
         println("Drove for $distance KMs on battery")
     }
-    
+
     override fun drive(): String {
         return "Drove for $range KMs on electricity"
     }
-    
+
     override fun brake() {
         super<>.brake()
         println("Brake from electric car")
@@ -1030,16 +1036,159 @@ class ElectricCar(
 fun main() {
    var audiA3 = Car(220.0, "A3", "Audi")
    var teslaS = ElectricCar(240.0, "S-Model", "Tesla", 85.0)
-   
+
    audiA3.drive(200.0)
    teslaS.drive(200.0)
    teslaS.drive()
-   
+
    teslaS.brake()
    audiA3.brake()
 }
 ```
+
 :::important
 To override the non-abstract method `brake()` we need to specify interface name with method using `super` keyword as `super<interface_name>.methodName()` for immediate parent. For sub class then we only use the `super.methodName()`.
 :::
 
+# Miscellaneous
+
+## Array List
+
+Kotlin ArrayList class is used to create a dynamic array. Which means the size of ArrayList class can be increased or decreased according to requirement. ArrayList class provides both read and write functionalities.
+
+Kotlin ArrayList class follows the sequence of insertion order. ArrayList class is non synchronized and it may contains duplicate elements. The elements of ArrayList class are accessed randomly as it works on index basis.
+
+```Kotlin
+fun main(){
+    val myArrayList: ArrayList<Double> = ArrayList()
+    myArrayList.add(13.212312)
+    myArrayList.add(23.151232)
+    myArrayList.add(32.651553)
+    myArrayList.add(16.223817)
+    myArrayList.add(18.523999)
+    var total = 0.0
+    for (i in myArrayList){
+        total += i
+    }
+    var average = total / myArrayList.size
+    println("Avarage is " + average)
+}
+```
+
+## Lamda Functions
+
+Lambda is a function which has no name. Lambda is defined with a curly braces `{}` which takes variable as a parameter (if any) and body of function. The body of function is written after variable (if any) followed by `->` operator.
+
+- The following two are same
+
+```kotlin
+fun main() {
+    val sum: (Int, Int) -> Int = {a: Int, b: Int -> a + b}
+    println(sum(10,5))
+ }
+```
+
+```kotlin
+fun main() {
+    val sum = {a: Int, b: Int -> a + b}
+    println(sum(10,5))
+}
+```
+
+## Visibility Modifiers
+
+- Visibility modifiers are the `keywords` which are used to restrict the use of classes, interfaces, methods, and properties in Kotlin.
+- These modifiers are used at multiple places such as class headers or method body.
+- Visibility Modifiers are categorized into four different types
+  1. Public - Default modifier
+  2. Private - Accessible within the block in which properties, methods etc are declared.
+  3. Protected - Visible to its class or sub class. It cannot be declared at toplevel in Packages.
+  4. Internal - Accessible only inside the module in which it is implemented
+
+:::caution
+In Kotlin all classes are `final` by default, so they cannot be inherited by default. So, to make a class inheritable to other classes then we must mark the class with `open` keyword, else we get an error $``$type is final so cant be inherited.$"$
+:::
+
+## Nested Class
+
+- A class which is created inside an another class.
+- In Kotlin, a nested class is by default **static**, so its data members and member functions can be accessed without creating an object of the class.
+- Nested Classes cannot access the data members of outer classes.
+
+## Inner Class
+
+- A class which is created inside another class using `inner` keyword. In other words, nested class which is marked with `inner` keyword
+- Inner class cannot be declared inside interfaces or non-inner nested classes.
+- Unlike nested class, It is able access members of its outer class even they are in `private`.
+- Inner class keeps a reference to an object of its outer class.
+
+## Unsafe Cast Operator: `as`
+
+- Sometimes it's not possible to cast a variable and it throws an exception, this is called an **unsafe cast**.
+- The unsafe cast is performed by the infix operator `as`.
+
+```kotlin
+// A nullable string (String?) cannot be cast to non-nullable string (String)
+// This throws an exception
+fun main() {
+  val x: Any ?= null
+  val y: String = x as String
+  println(y)
+}
+```
+
+:::warning
+Output: `Exception in thread "main" kotlin.TypeCastException: null cannot be cast to non-null type kotlin String.`
+:::
+
+## Safe cast operator: `as?`
+
+- `as?` provides a safe cast operation to safely cast to a type.
+- It return a null if casting is not possible rather than throwing a `ClassCastException`.
+
+```kotlin
+fun main() {
+  val x: Any = "Kotlin"
+  val safeString : String = x as? String
+  val safeInt: Int = x as? Int
+  println(safeString)  // Kotlin
+  println(safeInt)    // null
+}
+```
+
+## Exception Handling
+
+- EXception is a runtime problem which occur in the program and leads to program termination. There are two types of excpetions they are
+  1. **UnChecked Exception:** this exception type extends `RuntimeException` class
+     - ArithmeticException
+     - ArrayIndexOutOfBoundException
+     - SecurityException
+     - NullPointerException etc.
+  2. **Checked Exception:** this exception type extends `Throwable` class
+  - IOException
+  - SQLException etc.
+- Exception handling is a technique which handles the runtime problems and maintains the flow of program execution.
+- The four keywords used in exception handling are
+  1. **`try` :** contains a set of statements which might generate an exception. It must be followed by `catch` or `finally` or both.
+  2. **`catch` :** It catches the exception thrown from the try block
+  3. **`finally` :** It always executes whether exception is handled or not. So it is mostly used to execute important code statements (like closing buffer)
+  4. **`throw` :** Used to throw an exception explicitly
+
+```kotlin
+fun main (args: Array<String>){
+    try {
+        val data = 5 / 0
+        println(data)
+    } catch (e: ArithmeticException) {
+        println(e)
+    } finally {
+        println("finally block always executes")
+    }
+}
+```
+
+# References
+
+- [Kotlin Official Docs](https://kotlinlang.org/docs/reference/)
+- [JavaTPoint Kotlin](https://www.javatpoint.com/kotlin-tutorial)
+- [Interview Questions](https://www.ubuntupit.com/frequently-asked-kotlin-interview-questions-and-answers/)
