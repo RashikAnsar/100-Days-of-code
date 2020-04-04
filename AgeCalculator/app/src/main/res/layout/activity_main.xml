@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="IN MINUTES"
+        android:text="IN DAYS"
         android:textColor="@color/textColor"
         android:textSize="25sp"
         android:textStyle="bold" />
