@@ -3,10 +3,16 @@ package com.example.whiteboard
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageButton
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_brush_size.*
 
 class MainActivity : AppCompatActivity() {
+
+    private var mImageButtonCurrentPaint: ImageButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,7 +20,15 @@ class MainActivity : AppCompatActivity() {
 
         drawing_view.setSizeForBrush(20.toFloat())
 
-        ib_brush.setOnClickListener{
+        mImageButtonCurrentPaint = ll_paint_colors[1] as ImageButton
+        mImageButtonCurrentPaint!!.setImageDrawable(
+            ContextCompat.getDrawable(
+                this,
+                R.drawable.pallet_pressed
+            )
+        )
+
+        ib_brush.setOnClickListener {
             showBrushSizeChooseDialog()
         }
     }
@@ -42,5 +56,22 @@ class MainActivity : AppCompatActivity() {
             brushDialog.dismiss()
         }
         brushDialog.show()
+    }
+
+    fun paintClicked(view: View) {
+        if (view !== mImageButtonCurrentPaint) {
+            val imageButton = view as ImageButton
+            val colorTag = imageButton.tag.toString()
+
+            drawing_view.setColor(colorTag)
+            imageButton.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.pallet_pressed
+                )
+            )
+            mImageButtonCurrentPaint!!.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.pallet_normal))
+            mImageButtonCurrentPaint = view
+        }
     }
 }
