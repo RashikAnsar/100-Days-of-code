@@ -155,6 +155,15 @@
             android:src="@drawable/ic_brush" />
 
         <ImageButton
+            android:id="@+id/ib_save"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:contentDescription="brush image"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_save" />
+
+        <ImageButton
             android:id="@+id/ib_undo"
             android:layout_width="50dp"
             android:layout_height="50dp"
