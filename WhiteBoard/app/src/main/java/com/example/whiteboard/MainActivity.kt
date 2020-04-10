@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.media.MediaScannerConnection
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -206,7 +207,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private inner class BitmapAsyncTask(val mBitmap: Bitmap) : AsyncTask<Any, Void, String>() {
-        
+
         private lateinit var mProgressDialog: Dialog
 
         override fun onPreExecute() {
@@ -252,6 +253,17 @@ class MainActivity : AppCompatActivity() {
                     "Something went wrong while saving the file",
                     Toast.LENGTH_SHORT
                 ).show()
+            }
+            
+            MediaScannerConnection.scanFile(this@MainActivity, arrayOf(result), null) {
+                path, uri -> val shareIntent = Intent()
+                shareIntent.action = Intent.ACTION_SEND
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+                shareIntent.type = "image/*"
+
+                startActivity(
+                    Intent.createChooser(shareIntent, "Share")
+                )
             }
         }
         
