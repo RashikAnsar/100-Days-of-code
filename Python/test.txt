@@ -1,0 +1,3 @@
+We are writing this file from Python
+Open the file using with statement
+The good thing about with is it automatically closes when the block inside with is exited.
